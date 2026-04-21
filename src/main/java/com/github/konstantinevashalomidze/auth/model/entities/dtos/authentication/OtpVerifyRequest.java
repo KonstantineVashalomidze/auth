@@ -7,14 +7,8 @@ public record OtpVerifyRequest(
         String email,
 
         @NotNull @Size(min = 6, max = 6)
-        String otp,
+        String otp
 
-        @Size(min = 1, max = 80)
-        String displayName,
-
-        @Min(5) @Max(120)
-        Integer age,
-
-        @AssertTrue
-        Boolean termsAccepted
 ) {}
+
+

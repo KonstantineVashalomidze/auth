@@ -7,6 +7,7 @@ import com.github.konstantinevashalomidze.auth.model.entities.dtos.authenticatio
 import com.github.konstantinevashalomidze.auth.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -21,6 +22,9 @@ import java.time.Duration;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+
+    @Value("${spring.application.customConfigs.constants.domainName}")
+    private String domainName;
 
     @PostMapping("/otp/request")
     public ResponseEntity<RequestOtpResponse> requestOtp(
@@ -38,17 +42,15 @@ public class AuthenticationController {
         AuthenticationTokenResponse authenticationTokenResponse
                 = authenticationService.verifyOtp(
                 otpVerifyRequest.email().trim().toLowerCase(),
-                otpVerifyRequest.otp().trim(),
-                otpVerifyRequest.age(),
-                otpVerifyRequest.displayName(),
-                otpVerifyRequest.termsAccepted()
+                otpVerifyRequest.otp().trim()
         );
 
         ResponseCookie refreshCookie = ResponseCookie.from("Refresh-Token", authenticationTokenResponse.refreshToken())
                 .httpOnly(true)
                 .secure(true)
                 .path("/api/v1/authentication")
-                .sameSite("Strict")
+                .sameSite("Lax")
+                .domain(domainName)
                 .maxAge(Duration.ofSeconds(authenticationTokenResponse.refreshTokenExpirationSeconds()))
                 .build();
 
@@ -56,7 +58,8 @@ public class AuthenticationController {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("Lax")
+                .domain(domainName)
                 .maxAge(Duration.ofSeconds(authenticationTokenResponse.accessTokenExpirationSeconds()))
                 .build();
 
@@ -76,12 +79,12 @@ public class AuthenticationController {
         AuthenticationTokenResponse tokens = authenticationService.refreshToken(token);
 
         ResponseCookie newAccess = ResponseCookie.from("Access-Token", tokens.accessToken())
-                .httpOnly(true).secure(true).path("/").sameSite("Strict")
+                .httpOnly(true).secure(true).path("/").sameSite("Lax").domain(domainName)
                 .maxAge(Duration.ofSeconds(tokens.accessTokenExpirationSeconds())).build();
 
         ResponseCookie newRefresh = ResponseCookie.from("Refresh-Token", tokens.refreshToken())
                 .httpOnly(true).secure(true).path("/api/v1/authentication")
-                .sameSite("Strict")
+                .sameSite("Lax").domain(domainName)
                 .maxAge(Duration.ofSeconds(tokens.refreshTokenExpirationSeconds())).build();
 
         return ResponseEntity.noContent()

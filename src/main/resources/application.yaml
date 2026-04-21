@@ -17,6 +17,8 @@ spring:
         otpMaxAttempts: 5
         refreshTokenExpirationSeconds: 2592000 # 30 days
         accessTokenExpirationSeconds: 900 # 15 mins
+        domainName: ${DOMAIN_NAME}
+        allowed-origins: ${ALLOWED_ORIGINS}
 
 jwt:
   secret: ${JWT_SECRET}

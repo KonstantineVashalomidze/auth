@@ -40,31 +40,15 @@
         <p id="login-error"></p>
     </section>
 
-    <!-- Step 2b: OTP + registration fields for new accounts -->
+    <!-- Step 2b: OTP + registration for new accounts -->
     <section id="register-step" class="step" hidden>
         <p class="server-message"></p>
         <span class="otp-countdown"></span>
         <form id="register-form">
-            <fieldset>
-                <legend>Fill in the values</legend>
-                <label for="register-otp">One-time code:</label>
-                <input id="register-otp" class="inline" type="text" name="otp"
-                       inputmode="numeric" autocomplete="one-time-code"
-                       minlength="6" maxlength="6" required>
-
-                <label for="display-name">Display name:</label>
-                <input id="display-name" class="inline" type="text" name="display-name"
-                       minLength="1" maxlength="80" required>
-
-                <label for="age">Age:</label>
-                <input id="age" class="inline" type="number" name="age" min="5" max="120" required>
-            </fieldset>
-
-            <a href="/terms-and-conditions" target="_blank">Read our terms and conditions</a>
-            <label for="terms-and-conditions">
-                <input type="checkbox" name="terms-and-conditions" id="terms-and-conditions" class="inline" required>
-                I accept the terms and conditions
-            </label>
+            <label for="register-otp">One-time code:</label>
+            <input id="register-otp" type="text" name="otp"
+                   inputmode="numeric" autocomplete="one-time-code"
+                   minlength="6" maxlength="6" required>
             <button type="submit">Create account</button>
         </form>
         <p id="register-error"></p>

@@ -78,7 +78,7 @@ public class AuthenticationService {
     }
 
     @Transactional
-    public AuthenticationTokenResponse verifyOtp(String email, String submittedOtp, Integer age, String displayName, Boolean termsAccepted) {
+    public AuthenticationTokenResponse verifyOtp(String email, String submittedOtp) {
         OTP otp = otpRepository.findFirstByEmailAndUsedAtIsNullAndExpiresAtAfterOrderByCreatedAtDesc(email, Instant.now())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
@@ -113,7 +113,7 @@ public class AuthenticationService {
         User user;
         AccountStatus accountStatus;
         if (userOpt.isEmpty()) {
-             user = registerNewUser(email, age, displayName, termsAccepted);
+             user = registerNewUser(email);
              accountStatus = AccountStatus.NEW;
         } else {
              user = userOpt.get();
@@ -195,15 +195,7 @@ public class AuthenticationService {
     }
 
 
-    private User registerNewUser(String email, Integer age, String displayName, Boolean termsAccepted) {
-        if (age == null) {
-            throw new IllegalArgumentException("Age is required when creating new account.");
-        }
-
-        if (termsAccepted == null || !termsAccepted) {
-            throw new IllegalArgumentException("You must accept the Terms & Conditions to create an account.");
-        }
-
+    private User registerNewUser(String email) {
         User user = new User();
         user.setEmail(email);
         userRepository.save(user);
