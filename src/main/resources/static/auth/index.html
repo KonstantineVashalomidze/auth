@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="module" src="auth.js"></script>
+    <link rel="stylesheet" href="auth.css">
+    <title>Authentication</title>
+</head>
+<body>
+<header>
+    <h1>Authentication</h1>
+    <p>Please fill out the form with the required information</p>
+</header>
+<main>
+    <!-- Step 1: Email entry (always shown first) -->
+    <section id="email-step" class="step">
+        <p>Enter your email to receive a one-time code.</p>
+        <form id="email-form">
+            <label for="email">Email:</label>
+            <input id="email" class="inline" type="email" name="email" placeholder="example@gmail.com" required>
+            <button type="submit">Send code</button>
+        </form>
+        <p id="email-error"></p>
+    </section>
+
+    <!-- Step 2a: OTP entry for existing accounts -->
+    <section id="login-step" class="step" hidden>
+        <p class="server-message"></p>
+        <span class="otp-countdown"></span>
+        <form id="login-form">
+            <label for="login-otp">One-Time code:</label>
+            <input id="login-otp" class="inline" type="text" name="otp"
+                   inputmode="numeric" autocomplete="one-time-code"
+                   minlength="6" maxlength="6" required>
+            <button type="submit">Sign in</button>
+        </form>
+        <p id="login-error"></p>
+    </section>
+
+    <!-- Step 2b: OTP + registration fields for new accounts -->
+    <section id="register-step" class="step" hidden>
+        <p class="server-message"></p>
+        <span class="otp-countdown"></span>
+        <form id="register-form">
+            <fieldset>
+                <legend>Fill in the values</legend>
+                <label for="register-otp">One-time code:</label>
+                <input id="register-otp" class="inline" type="text" name="otp"
+                       inputmode="numeric" autocomplete="one-time-code"
+                       minlength="6" maxlength="6" required>
+
+                <label for="display-name">Display name:</label>
+                <input id="display-name" class="inline" type="text" name="display-name"
+                       minLength="1" maxlength="80" required>
+
+                <label for="age">Age:</label>
+                <input id="age" class="inline" type="number" name="age" min="5" max="120" required>
+            </fieldset>
+
+            <a href="/terms-and-conditions" target="_blank">Read our terms and conditions</a>
+            <label for="terms-and-conditions">
+                <input type="checkbox" name="terms-and-conditions" id="terms-and-conditions" class="inline" required>
+                I accept the terms and conditions
+            </label>
+            <button type="submit">Create account</button>
+        </form>
+        <p id="register-error"></p>
+    </section>
+
+</main>
+</body>
+</html>
