@@ -10,14 +10,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailService {
 
-    /* CONSTANTS START */
     @Value("${spring.application.customConfigs.constants.applicationEmail}")
     private String APPLICATION_EMAIL;
-    /* CONSTANTS END */
 
-    /* CUSTOM START */
     private final JavaMailSender mailSender;
-    /* CUSTOM END */
 
     public void sendOtp(String toEmail, String otpCode) {
         SimpleMailMessage message = new SimpleMailMessage();
